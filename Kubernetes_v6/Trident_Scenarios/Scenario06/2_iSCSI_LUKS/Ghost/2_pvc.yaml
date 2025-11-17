@@ -5,7 +5,7 @@ metadata:
   namespace: ghost-iscsi-luks
 spec:
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   resources:
     requests:
       storage: 5Gi

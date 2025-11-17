@@ -1,5 +1,7 @@
 #########################################################################################
+
 # SCENARIO 6: Create your first App with an iSCSI LUN
+
 #########################################################################################
 
 **GOAL:**  
@@ -38,14 +40,14 @@ persistentvolumeclaim/blog-content-iscsi   Bound    pvc-d1d39be5-073d-4bac-926c-
 
 ## B. Access the app
 
-It takes a few seconds for the POD to be in a *running* state
+It takes a few seconds for the POD to be in a _running_ state
 The Ghost service is configured with a NodePort type, which means you can access it from every node of the cluster on port 30181.
 Give it a try !
 => `http://192.168.0.63:30181`
 
 ## C. Explore the app container
 
-Let's see if the */var/lib/ghost/content* folder is indeed mounted to the SAN PVC that was created.
+Let's see if the _/var/lib/ghost/content_ folder is indeed mounted to the SAN PVC that was created.
 
 ```bash
 $ kubectl exec -n ghost-iscsi $(kubectl -n ghost-iscsi get pod -o name) -- df /var/lib/ghost/content
@@ -61,7 +63,7 @@ logs
 lost+found
 settings
 themes
-```  
+```
 
 ## D. About CHAP & multipathing
 
@@ -75,7 +77,8 @@ blog-iscsi-66cffd58dd-82d6s   1/1     Running   0          8m9s   192.168.28.123
 ```
 
 Now that host had been identified, let's take a look at CHAP (on _host2_ in this case).  
-You will notice the following block appear twice in the configuration, which is due to multipathing.  
+You will notice the following block appear twice in the configuration, which is due to multipathing.
+
 ```bash
 $ iscsiadm -m session -P 3 | grep CHAP -A 5
                 CHAP:
@@ -85,12 +88,14 @@ $ iscsiadm -m session -P 3 | grep CHAP -A 5
                 username_in: iJF4sgjrnwOwQ
                 password_in: ********
 ```
+
 You can compare those values with the ones set in the Trident backend created in [Scenario05](../../Scenario05).  
-You will notice they are the exact same ones!  
+You will notice they are the exact same ones!
 
 With recent versions of Trident, **multipathing** is mandatory.  
 The ONTAP SVM hosting block workloads has 2 Data LIF configured for iSCSI: _192.168.0.135_ & _192.168.0.136_.  
-Let's check what we see on the node hosting the Ghost pod (_rhel2_ in my case, where only one LUN is mounted) about iSCSI sessions & multipathing:  
+Let's check what we see on the node hosting the Ghost pod (_rhel2_ in my case, where only one LUN is mounted) about iSCSI sessions & multipathing:
+
 ```bash
 $ iscsiadm -m session
 tcp: [1] 192.168.0.135:3260,1030 iqn.1992-08.com.netapp:sn.7c8b4c9af76e11ee8aac005056b0f629:vs.4 (non-flash)
@@ -116,8 +121,7 @@ sdc                              8:32   0   5G  0 disk
                                253:3    0   5G  0 mpath /var/lib/kubelet/pods/52526e43-38e9-469f-9045-b1e689ecf066/volumes/kubernetes.io~csi/pvc-d1d39be5-073d-4bac-926c-9d5647cb1a73/mount
 ```
 
-You can see how both disk references point to the same LUN (_multipath -ll_) & the same PVC (_lsbk_).  
-
+You can see how both disk references point to the same LUN (_multipath -ll_) & the same PVC (_lsbk_).
 
 ## E. Cleanup
 
@@ -132,6 +136,6 @@ namespace "ghost-iscsi" deleted
 
 Now that you have tried working with SAN backends, you can try to resize a PVC:
 
-- [Scenario09](../../Scenario09): Resize a iSCSI CSI PVC  
+- [Scenario09](../../Scenario09): Resize a iSCSI CSI PVC
 
 Or go back to the [FrontPage](https://github.com/YvosOnTheHub/LabNetApp)

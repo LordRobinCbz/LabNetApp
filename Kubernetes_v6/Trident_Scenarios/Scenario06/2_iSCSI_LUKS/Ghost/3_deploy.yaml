@@ -18,17 +18,17 @@ spec:
       nodeSelector:
         kubernetes.io/os: linux
       containers:
-      - name: blog
-        image: registry.demo.netapp.com/ghost:2.6-alpine
-        ports:
-        - containerPort: 2368
-        env:
-        - name: url
-          value: http://192.168.0.62:30181
-        volumeMounts:
-        - mountPath: /var/lib/ghost/content
-          name: content
+        - name: blog
+          image: registry.demo.netapp.com/ghost:2.6-alpine
+          ports:
+            - containerPort: 2368
+          env:
+            - name: url
+              value: http://192.168.0.62:30182
+          volumeMounts:
+            - mountPath: /var/lib/ghost/content
+              name: content
       volumes:
-      - name: content
-        persistentVolumeClaim:
-          claimName: blog-content-iscsi
+        - name: content
+          persistentVolumeClaim:
+            claimName: blog-content-iscsi

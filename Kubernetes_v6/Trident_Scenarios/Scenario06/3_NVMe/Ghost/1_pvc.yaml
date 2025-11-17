@@ -5,7 +5,7 @@ metadata:
   namespace: ghost-nvme
 spec:
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   resources:
     requests:
       storage: 5Gi

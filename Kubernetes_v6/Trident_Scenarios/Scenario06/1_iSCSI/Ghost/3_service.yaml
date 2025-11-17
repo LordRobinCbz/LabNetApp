@@ -8,7 +8,7 @@ spec:
   selector:
     app: blog-iscsi
   ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 2368
-    nodePort: 30181
+    - protocol: TCP
+      port: 80
+      targetPort: 2368
+      nodePort: 30181
